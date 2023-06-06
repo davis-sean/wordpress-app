@@ -1,0 +1,38 @@
+version: '3'
+
+services:
+  cloudflare:
+    container_name: ${SERVICE}-cloudflare
+    image: cloudflare/cloudflared
+    command: tunnel run
+    restart: always
+    environment:
+      TUNNEL_TOKEN: ${TOKEN}
+
+  db:
+    container_name: ${SERVICE}-db
+    image: mysql
+    volumes:
+      - ./${SERVICE}-data/mysql:/var/lib/mysql
+    restart: always
+    environment:
+      MYSQL_DATABASE: ${SERVICE}-wp
+      MYSQL_USER: ${SERVICE}-wpuser
+      MYSQL_PASSWORD: ${SQLPASSWORD}
+      MYSQL_ROOT_PASSWORD: ${SQLPASSWORD}
+
+  wordpress:
+    container_name: ${SERVICE}-wordpress
+    image: wordpress:latest
+    depends_on:
+      - db
+    volumes:
+      - ./${SERVICE}-data/html:/var/www/html
+      - ./${SERVICE}-data/logs/www:/var/log/apache2
+      - ./uploads.ini:/usr/local/etc/php/conf.d/uploads.ini
+    restart: always
+    environment:
+      WORDPRESS_DB_HOST: ${SERVICE}-db
+      WORDPRESS_DB_NAME: ${SERVICE}-wp
+      WORDPRESS_DB_USER: ${SERVICE}-wpuser
+      WORDPRESS_DB_PASSWORD: ${SQLPASSWORD}
