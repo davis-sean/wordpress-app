@@ -28,7 +28,6 @@ services:
       - db
     volumes:
       - ./${SERVICE}-data/html:/var/www/html
-      - ./${SERVICE}-data/logs/www:/var/log/apache2
       - ./uploads.ini:/usr/local/etc/php/conf.d/uploads.ini
     restart: always
     environment:
