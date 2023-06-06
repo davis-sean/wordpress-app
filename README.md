@@ -1,6 +1,6 @@
-## Docker Compose for DS-WebServices
+## Docker Compose for Wordpress-App
 
-This is a docker compose file to build the DS-WebServices docker containers.
+This is a docker compose file to build the Wordpress-App docker containers.
 It is composed of:
 - MySQL Container for Database
 - Wordpress Container for Data
